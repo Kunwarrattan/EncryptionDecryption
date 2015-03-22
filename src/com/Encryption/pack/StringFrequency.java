@@ -1,16 +1,28 @@
 package com.Encryption.pack;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 
 public class StringFrequency {
 	
 	HashMap<Character, Float> PreMap = new HashMap<Character, Float>();
+	
 	HashMap<Character, Integer> SetMapCounter = new HashMap<Character, Integer>();
+    
 	HashMap<Character, Float> SetMapFrequency = new HashMap<Character, Float>();
+    
 	HashMap<Character, Character > TempSetMap = new HashMap<Character, Character>();
+	LinkedHashMap<Character, Float> sortedMap = null;
+	LinkedHashMap<Character, Float> sortedMap1 = null;
+	
 	String text = "pvskrlobsktnkprptprchzrovsjrkmtrpssukdpcnjsuiswshpvctxvpvshtlnsjcyisdkrkujcthfujsubbdnrxhtlnsjpvsjsrkubcpcyjsfthfuhzduhfcpvsjkpuprkprzubojcosjprskcyshxbrkvpseppvupluisrpmtrpssukdpcfspsjlrhsujsukchunbdxccfisdpvsyrjkpkpsorkpczubztbupspvsyjsmtshzdfrkpjrntprchcypvsbsppsjkrhpvszrovsjpseppvrkzchkrkpkcyzcthprhxvcqluhdprlsksuzvbsppsjuoosujkhuptjubshxbrkvpsepvukuwsjdfrkprhzpfrkpjrntprchpvupzuhnstksfvsbozjuzizcfsk";
 	
 	public StringFrequency() 
@@ -20,14 +32,83 @@ public class StringFrequency {
 		setField();
 		int TotalCount = TotalCount(SetMapCounter);
 		Frequency(TotalCount);
-		Mapping();
+		System.out.println("Unsort Map......");
+		
+		//printMap(SetMapFrequency);
+ 
+		System.out.println("\nSorted String Map......");
+		sortedMap = sortByComparator(SetMapFrequency);
+		printMap(sortedMap);
+		
+		
+		//printMap(PreMap);
+		 
+		System.out.println("\nSorted Pre Map......");
+		sortedMap1 = sortByComparator(PreMap);
+		printMap(sortedMap1);
+		//i am bored of studying 
+		
+		ArrayList<Character> a = new ArrayList<Character>();
+		ArrayList<Character> b = new ArrayList<Character>();
+		
+		System.out.println("---------------ssd-----------------------------------------");
+		
+		
+		for(Character k : sortedMap.keySet()) { 
+			a.add(k);
+			System.out.println("Key="+k+" Value="+sortedMap.get(k)); 
+		}
+		for(Character k : sortedMap1.keySet()) {
+			b.add(k);
+			System.out.println("Key="+k+" Value="+sortedMap1.get(k)); 
+		}
+		
+		for(int i=0; i < 26 ; i++){
+			TempSetMap.put(a.get(i),b.get(i));
+		}
+		
+		printMap(TempSetMap);
+		
 	}
 	
 
-	private void Mapping() {
+	private void mapping() {
 		
 		
 	}
+
+
+	private  LinkedHashMap<Character, Float> sortByComparator(HashMap<Character, Float> setMapFrequency2) {
+		 
+		// Convert Map to List
+		List<Map.Entry<Character, Float>> list = 
+				new LinkedList<Map.Entry<Character, Float>>(setMapFrequency2.entrySet());
+		
+		
+		// Sort list with comparator, to compare the Map values
+		Collections.sort(list, new Comparator<Map.Entry<Character, Float>>() {
+			public int compare(Map.Entry<Character, Float> o1,
+                                           Map.Entry<Character, Float> o2) {
+				return (o1.getValue()).compareTo(o2.getValue());
+			}
+		});
+ 
+		// Convert sorted map back to a Map
+		LinkedHashMap<Character, Float> sortedMap = new LinkedHashMap<Character, Float>();
+		for (Iterator<Entry<Character, Float>> it = list.iterator(); it.hasNext();) {
+			Entry<Character, Float> entry = it.next();
+			sortedMap.put(entry.getKey(), entry.getValue());
+		}
+		return sortedMap;
+	}
+ 
+	/*public static void printMap(Map<String, Integer> map) {
+		for (Map.Entry<String, Integer> entry : map.entrySet()) {
+			System.out.println("[Key] : " + entry.getKey() 
+                                      + " [Value] : " + entry.getValue());
+		}
+	}*/
+ 
 
 
 	private void setField() 
@@ -54,7 +135,7 @@ public class StringFrequency {
 		     
 		    }
 		  
-		printMap(SetMapFrequency);
+		//printMap(SetMapFrequency);
 	}
 
 
@@ -102,6 +183,7 @@ public class StringFrequency {
 	}
 
 	private void UpdateMap() {
+		PreMap.put('z',(float) 0.00074);
 		PreMap.put('e',(float) 0.12702);
 		PreMap.put('t',(float) 0.09056);
 		PreMap.put('a',(float) 0.08167);
@@ -127,7 +209,7 @@ public class StringFrequency {
 		PreMap.put('j',(float) 0.00153);
 		PreMap.put('x',(float) 0.0015);
 		PreMap.put('q',(float) 0.00095);
-		PreMap.put('z',(float) 0.00074);
+		
 		
 		printMap(PreMap);
 	}
