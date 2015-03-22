@@ -23,10 +23,13 @@ public class StringFrequency {
 	LinkedHashMap<Character, Float> sortedMap = null;
 	LinkedHashMap<Character, Float> sortedMap1 = null;
 	
-	String text = "pvskrlobsktnkprptprchzrovsjrkmtrpssukdpcnjsuiswshpvctxvpvshtlnsjcyisdkrkujcthfujsubbdnrxhtlnsjpvsjsrkubcpcyjsfthfuhzduhfcpvsjkpuprkprzubojcosjprskcyshxbrkvpseppvupluisrpmtrpssukdpcfspsjlrhsujsukchunbdxccfisdpvsyrjkpkpsorkpczubztbupspvsyjsmtshzdfrkpjrntprchcypvsbsppsjkrhpvszrovsjpseppvrkzchkrkpkcyzcthprhxvcqluhdprlsksuzvbsppsjuoosujkhuptjubshxbrkvpsepvukuwsjdfrkprhzpfrkpjrntprchpvupzuhnstksfvsbozjuzizcfsk";
+	HashMap<String, Float> PreBioMoni  = new HashMap<String, Float>();
+	HashMap<String, Integer> BioMoni  = new HashMap<String, Integer>();
+	HashMap<String, Float> BioMoniFrequncy  = new HashMap<String, Float>();
 	
-	public StringFrequency() 
-	{
+	String text = "pvskrlobsktnkprptprchzrovsjrkmtrpssukdpcnjsuiswshpvctxvpvshtlnsjcyisdkrkujcthfujsubbdnrxhtlnsjpvsjsrkubcpcyjsfthfuhzduhfcpvsjkpuprkprzubojcosjprskcyshxbrkvpseppvupluisrpmtrpssukdpcfspsjlrhsujsukchunbdxccfisdpvsyrjkpkpsorkpczubztbupspvsyjsmtshzdfrkpjrntprchcypvsbsppsjkrhpvszrovsjpseppvrkzchkrkpkcyzcthprhxvcqluhdprlsksuzvbsppsjuoosujkhuptjubshxbrkvpsepvukuwsjdfrkprhzpfrkpjrntprchpvupzuhnstksfvsbozjuzizcfsk";
+	StringBuilder str = null;
+	public StringFrequency() {
 		UpdateMap();
 		counter();
 		setField();
@@ -38,43 +41,70 @@ public class StringFrequency {
  
 		System.out.println("\nSorted String Map......");
 		sortedMap = sortByComparator(SetMapFrequency);
-		printMap(sortedMap);
+		//printMap(sortedMap);
 		
 		
 		//printMap(PreMap);
 		 
-		System.out.println("\nSorted Pre Map......");
+		//System.out.println("\nSorted Pre Map......");
 		sortedMap1 = sortByComparator(PreMap);
-		printMap(sortedMap1);
+		//printMap(sortedMap1);
 		//i am bored of studying 
 		
 		ArrayList<Character> a = new ArrayList<Character>();
 		ArrayList<Character> b = new ArrayList<Character>();
 		
-		System.out.println("---------------ssd-----------------------------------------");
+		//System.out.println("---------------ssd-----------------------------------------");
 		
 		
 		for(Character k : sortedMap.keySet()) { 
-			a.add(k);
-			System.out.println("Key="+k+" Value="+sortedMap.get(k)); 
+			b.add(k);
+			//System.out.println("Key="+k+" Value="+sortedMap.get(k)); 
 		}
 		for(Character k : sortedMap1.keySet()) {
-			b.add(k);
-			System.out.println("Key="+k+" Value="+sortedMap1.get(k)); 
+			a.add(k);
+			//System.out.println("Key="+k+" Value="+sortedMap1.get(k)); 
 		}
 		
 		for(int i=0; i < 26 ; i++){
 			TempSetMap.put(a.get(i),b.get(i));
 		}
 		
-		printMap(TempSetMap);
+		//printMap(TempSetMap);
 		
+		mapping();
+		countBio();
+		int TotalCountNew = TotalCount(BioMoni);
+		System.out.println(TotalCountNew);
+		countBioFrequency(TotalCountNew);
 	}
 	
 
+	private void countBioFrequency(int totalCountNew) {
+		Iterator it = BioMoni.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry pair = (Map.Entry)it.next();
+	        int k = (Integer) pair.getValue();
+	        float local = (float)  k/totalCountNew;
+	        BioMoniFrequncy.put( (String)pair.getKey(), local);
+	     
+	    }
+	  
+	    printMap(BioMoniFrequncy);
+		
+	}
+
+
 	private void mapping() {
 		
+		System.out.println(text);
+		for (char ch : text.toCharArray()){
+			Character c = TempSetMap.get(ch);
+			
+			System.out.print(c);
+	    }
 		
+		System.out.println(str);
 	}
 
 
@@ -157,6 +187,46 @@ public class StringFrequency {
 		
 	}
 	
+	
+	private void countBio(){
+		
+		int i=0;
+		int j=0;
+		
+		String str = null;
+		
+		char[] ch = text.toCharArray();
+		
+		char[] test  = new char[2];
+		
+		while(i!=text.length()){
+		
+			if(j==2){
+				String text1 = String.valueOf(test);
+				if(BioMoni.containsKey(text1)){
+					//String text1 = String.valueOf(test);
+					int k = BioMoni.get(text1)+1;
+					BioMoni.put(text1, k);
+				
+				}else{
+					//String text1 = String.valueOf(test);
+					BioMoni.put(text1, 1);
+				}
+				
+				i--;
+				j = 0;
+			
+			}else{
+				test[j] = ch[i];
+				j++;
+			}
+			
+			i++;
+		}
+		
+		printMap(BioMoni);
+	}
+	
 	public int TotalCount(Map preMap2){
 		Integer TotalCount = 0; 
 		Iterator it = preMap2.entrySet().iterator();
@@ -211,7 +281,7 @@ public class StringFrequency {
 		PreMap.put('q',(float) 0.00095);
 		
 		
-		printMap(PreMap);
+		//printMap(PreMap);
 	}
 
 
