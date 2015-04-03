@@ -13,22 +13,35 @@ import java.util.Map.Entry;
 
 public class StringFrequency {
 	
-	HashMap<Character, Float> PreMap = new HashMap<Character, Float>();
+	//Filling Map with predefined values
+	HashMap<Character, Float> PreMap = new HashMap<Character, Float>();				
 	
+	//setting counter by calculating repetition
 	HashMap<Character, Integer> SetMapCounter = new HashMap<Character, Integer>();
     
+	//calculating frequency
 	HashMap<Character, Float> SetMapFrequency = new HashMap<Character, Float>();
     
+	//mapping both maps
 	HashMap<Character, Character > TempSetMap = new HashMap<Character, Character>();
+	
+	//Sorting Map
 	LinkedHashMap<Character, Float> sortedMap = null;
 	LinkedHashMap<Character, Float> sortedMap1 = null;
 	
+	//Filling Map with predefined values
 	HashMap<String, Float> PreBioMoni  = new HashMap<String, Float>();
+	
+	//setting counter by calculating repetition
 	HashMap<String, Integer> BioMoni  = new HashMap<String, Integer>();
+	
+	//calculating frequency
 	HashMap<String, Float> BioMoniFrequncy  = new HashMap<String, Float>();
 	
 	String text = "pvskrlobsktnkprptprchzrovsjrkmtrpssukdpcnjsuiswshpvctxvpvshtlnsjcyisdkrkujcthfujsubbdnrxhtlnsjpvsjsrkubcpcyjsfthfuhzduhfcpvsjkpuprkprzubojcosjprskcyshxbrkvpseppvupluisrpmtrpssukdpcfspsjlrhsujsukchunbdxccfisdpvsyrjkpkpsorkpczubztbupspvsyjsmtshzdfrkpjrntprchcypvsbsppsjkrhpvszrovsjpseppvrkzchkrkpkcyzcthprhxvcqluhdprlsksuzvbsppsjuoosujkhuptjubshxbrkvpsepvukuwsjdfrkprhzpfrkpjrntprchpvupzuhnstksfvsbozjuzizcfsk";
+	
 	StringBuilder str = null;
+	
 	public StringFrequency() {
 		UpdateMap();
 		counter();
