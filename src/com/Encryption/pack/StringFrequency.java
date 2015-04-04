@@ -92,14 +92,26 @@ public class StringFrequency {
 		countBioFrequency(TotalCountNew);
 		UpdateMapR();
 		
+		float total = 0;
+		
 		Iterator it = BioMoniFrequncy.entrySet().iterator();
 	    while (it.hasNext()) {
 	        Map.Entry pair = (Map.Entry)it.next();
 	        float main  = (float) pair.getValue();
 	        float sub = ((float)PreBioMoni.get(pair.getKey()));
+	        if(sub != 0){
 	        float subtract = main - sub;
-	        System.out.println(subtract);
+	        total = total + subtract;
+ 	        System.out.println(subtract);
+	        }
+	        
 	    }
+	    
+	    
+	    System.out.println("--------------------------------------------------------------------------------");
+	    System.out.println("Total Count = " + total);
+	    
+	    
 		
 		
 	}
@@ -228,14 +240,14 @@ public class StringFrequency {
 		
 			if(j==2){
 				String text1 = String.valueOf(test);
-				if(BioMoni.containsKey(text1)){
+				if(BioMoni.containsKey(text1.toUpperCase())){
 					//String text1 = String.valueOf(test);
-					int k = BioMoni.get(text1)+1;
-					BioMoni.put(text1, k);
+					int k = BioMoni.get(text1.toUpperCase())+1;
+					BioMoni.put(text1.toUpperCase(), k);
 				
 				}else{
 					//String text1 = String.valueOf(test);
-					BioMoni.put(text1, 1);
+					BioMoni.put(text1.toUpperCase(), 1);
 				}
 				
 				i--;
