@@ -11,6 +11,12 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 
+
+/**
+ * Decryption component of Substitution Cipher
+ * @author Sanchit
+ *
+ */
 public class StringFrequency {
 	
 	//Filling Map with predefined values
@@ -39,8 +45,11 @@ public class StringFrequency {
 	HashMap<String, Float> BioMoniFrequncy  = new HashMap<String, Float>();
 	
 	String text = "pvskrlobsktnkprptprchzrovsjrkmtrpssukdpcnjsuiswshpvctxvpvshtlnsjcyisdkrkujcthfujsubbdnrxhtlnsjpvsjsrkubcpcyjsfthfuhzduhfcpvsjkpuprkprzubojcosjprskcyshxbrkvpseppvupluisrpmtrpssukdpcfspsjlrhsujsukchunbdxccfisdpvsyrjkpkpsorkpczubztbupspvsyjsmtshzdfrkpjrntprchcypvsbsppsjkrhpvszrovsjpseppvrkzchkrkpkcyzcthprhxvcqluhdprlsksuzvbsppsjuoosujkhuptjubshxbrkvpsepvukuwsjdfrkprhzpfrkpjrntprchpvupzuhnstksfvsbozjuzizcfsk";
+	String newText = null;
 	
 	StringBuilder str = null;
+	
+	char[][] beforeSwap = new char[26][26];
 	
 	public StringFrequency() {
 		UpdateMap();
@@ -48,11 +57,11 @@ public class StringFrequency {
 		setField();
 		int TotalCount = TotalCount(SetMapCounter);
 		Frequency(TotalCount);
-		System.out.println("Unsort Map......");
+		//System.out.println("Unsort Map......");
 		
 		//printMap(SetMapFrequency);
  
-		System.out.println("\nSorted String Map......");
+		//System.out.println("\nSorted String Map......");
 		sortedMap = sortByComparator(SetMapFrequency);
 		//printMap(sortedMap);
 		
@@ -62,9 +71,11 @@ public class StringFrequency {
 		//System.out.println("\nSorted Pre Map......");
 		sortedMap1 = sortByComparator(PreMap);
 		//printMap(sortedMap1);
-		//i am bored of studying 
-		
+		 
+		//predefined values for alphabets arraylist
 		ArrayList<Character> a = new ArrayList<Character>();
+		
+		//calculated values for alphabets arraylist
 		ArrayList<Character> b = new ArrayList<Character>();
 		
 		//System.out.println("---------------ssd-----------------------------------------");
@@ -83,8 +94,15 @@ public class StringFrequency {
 			TempSetMap.put(a.get(i),b.get(i));
 		}
 		
-		//printMap(TempSetMap);
+		System.out.println("----------------");
+		System.out.println("Mapped Alphabets");
+		System.out.println("----------------");
+		printMap(TempSetMap);
 		
+		System.out.println("----------------");
+		System.out.println("Swapping Alphabets");
+		System.out.println("----------------");
+		keySwap();
 		mapping();
 		countBio();
 		int TotalCountNew = TotalCount(BioMoni);
@@ -92,30 +110,87 @@ public class StringFrequency {
 		countBioFrequency(TotalCountNew);
 		UpdateMapR();
 		
-		float total = 0;
+		float score = 0;
 		
 		Iterator it = BioMoniFrequncy.entrySet().iterator();
-	    while (it.hasNext()) {
+		System.out.println("-------------------------------------------------------------");
+        System.out.println("Difference of Predefined and Calculated frequencies for Pairs");
+        System.out.println("-------------------------------------------------------------");
+		while (it.hasNext()) {
 	        Map.Entry pair = (Map.Entry)it.next();
-	        float main  = (float) pair.getValue();
-	        float sub = ((float)PreBioMoni.get(pair.getKey()));
+	        Float main  = (Float) pair.getValue();
+	        Float sub = ((Float)PreBioMoni.get(pair.getKey()));
 	        if(sub != 0){
-	        float subtract = main - sub;
-	        total = total + subtract;
- 	        System.out.println(subtract);
+	        float subtract = Math.abs(main - sub);
+	    
+	        score+= subtract;
+	        
+	        
+ 	        System.out.println(""+""+subtract);
 	        }
 	        
 	    }
 	    
 	    
-	    System.out.println("--------------------------------------------------------------------------------");
-	    System.out.println("Total Count = " + total);
+	    System.out.println("-----------------");
+	    System.out.println("Score: " + score);
+	    System.out.println("-----------------");
+	    		
+	    //we need to swap the keys now
+	
+	    int numberofAlphabets=26;
+	   // int row =0; int column=0;
 	    
+//	    for(int row=0;row<numberofAlphabets-1;row++){
+//	    	for(int column=0;column<numberofAlphabets-1-row;column++){
+//	    		keySwap();
+//	    	}
+//	    }
 	    
+	}
+	
+	
+	
+	//--------------------------------- Swapping 
+	private void keySwap() {
+		
+		
+		Iterator s = TempSetMap.entrySet().iterator();
+		int k = TempSetMap.size();
+		//System.out.println(k);
+		int temp,m=0,j;
+		while(s.hasNext()){
+		    Map.Entry pair = (Map.Entry)s.next();
+		    Character left = (Character) pair.getKey();
+		    //System.out.println(left);
+		    for(j=0 ; j < 1 ; j++){
+		    	beforeSwap[m][j] = left;
+		    	beforeSwap[m][j+1] = (Character) pair.getValue();
+		    }
+		    m++;
+		}
+		
+		for(int i = 0; i <26 ; i++){
+			for(j=0;j<2;j++){
+				System.out.print(i + " " + j + " = " +beforeSwap[i][j]+"\t" );
+			}
+			System.out.println("\n");
+		}
 		
 		
 	}
-	
+
+
+
+
+/*	private void validate(float score) {
+		if(score>0.1){
+					}
+		
+	}
+
+*/
+
 
 	private void countBioFrequency(int totalCountNew) {
 		Iterator it = BioMoni.entrySet().iterator();
@@ -127,18 +202,21 @@ public class StringFrequency {
 	     
 	    }
 	  
-	    printMap(BioMoniFrequncy);
+	    System.out.println("--------------------------------");
+	    System.out.println("Calculated frequencies for Pairs");
+	    System.out.println("--------------------------------");
+	   // printMap(BioMoniFrequncy);
 		
 	}
 
 
 	private void mapping() {
 		
-		System.out.println(text);
+		//System.out.println(text);
 		for (char ch : text.toCharArray()){
 			Character c = TempSetMap.get(ch);
 			
-			System.out.print(c	);
+			System.out.print(".."+c);
 	    }
 		
 		System.out.println(str);
@@ -202,7 +280,11 @@ public class StringFrequency {
 		     
 		    }
 		  
+		System.out.println("-------------------------------------------");    
+		System.out.println("Calculated frequencies for single alphabets");
+		System.out.println("-------------------------------------------");
 		//printMap(SetMapFrequency);
+		
 	}
 
 
@@ -218,8 +300,11 @@ public class StringFrequency {
 				SetMapCounter.put(ch, 1);
 			}
 	    }
-	
-		printMap(SetMapCounter);
+		
+		System.out.println("-------------------------------------------------------------");
+		System.out.println("Occurance Count for different alphabets in the encrypted text");
+		System.out.println("-------------------------------------------------------------");
+		//printMap(SetMapCounter);
 		//printMap(SetMapCounter);
 		
 	}
@@ -261,7 +346,10 @@ public class StringFrequency {
 			i++;
 		}
 		
-		printMap(BioMoni);
+		System.out.println("-----------------------------------------------");
+		System.out.println("Occurance Count for pairs in the encrypted text");
+		System.out.println("-----------------------------------------------");
+	//	printMap(BioMoni);
 	}
 	
 	public int TotalCount(Map preMap2){
@@ -286,9 +374,11 @@ public class StringFrequency {
 	        System.out.println(pair.getKey() + " = " + pair.getValue());
 	        //it.remove(); // avoids a ConcurrentModificationException
 	    }
-	    System.out.println("-----------------------------------------------------------");
+	    System.out.println("***************************************************");
+	  
 	}
 
+	//adding the predefined frequencies for alphabets
 	private void UpdateMap() {
 		PreMap.put('z',(float) 0.00074);
 		PreMap.put('e',(float) 0.12702);
@@ -317,10 +407,14 @@ public class StringFrequency {
 		PreMap.put('x',(float) 0.0015);
 		PreMap.put('q',(float) 0.00095);
 		
-		
+		System.out.println("-------------------------------------------");
+		System.out.println("Predefined frequencies for Single Alphabets");
+		System.out.println("-------------------------------------------");
 		//printMap(PreMap);
+		
 	}
 	
+	//adding the predefined frequencies for pairs 
 	private void UpdateMapR(){
 		PreBioMoni.put("TH",(float)0.02705698);
 		PreBioMoni.put("HE",(float)0.02328545);
@@ -998,11 +1092,16 @@ public class StringFrequency {
 		PreBioMoni.put("JX",(float)1.72752E-07);
 		PreBioMoni.put("JQ",(float)1.6697E-07);
 		PreBioMoni.put("QZ",(float)6.47529E-08);
-		System.out.println("asd"+PreBioMoni.get("JQ"));
-		printMap(PreBioMoni);
+		
+		System.out.println("-------------------------------------------");
+		System.out.println("Predefined frequencies for pairs in English");
+		System.out.println("-------------------------------------------");
+		
+		//printMap(PreBioMoni);
 	}
 
 
+	//the main method
 	public static void main(String[] args) {
 		StringFrequency st = new StringFrequency();
 
